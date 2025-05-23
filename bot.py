@@ -39,9 +39,15 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def fallback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not is_allowed_time():
-        await update.message.reply_text("🕒 Бот спить і працює лише з 08:00 до 02:00. Повертайся пізніше.")
+        text = "🕒 Бот спить і працює лише з 08:00 до 02:00. Повертайся пізніше."
     else:
-        await update.message.reply_text("Напиши /start, щоб отримати доступ 😊")
+        text = "Напиши /start, щоб отримати доступ 🙂"
+
+    if update.message:
+        await update.message.reply_text(text)
+    elif update.callback_query:
+        await update.callback_query.answer()
+        await update.callback_query.edit_message_text(text)
 
 def is_allowed_time():
     now = datetime.datetime.now()
